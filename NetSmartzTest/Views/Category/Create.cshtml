@@ -1,0 +1,104 @@
+﻿@model NetSmartz.Application.Models.CategoryModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<style>
+    #slider {
+        margin: 10px;
+    }
+</style>
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<h2>Create Category</h2>
+
+
+@using (Html.BeginForm("Create", "Category", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.HiddenFor(x => x.CategoryId)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+
+
+            <div class="col-md-offset-2 col-md-10">
+                <label for="amount">Price range:</label>
+                <div id="slider"></div>
+
+                @Html.EditorFor(model => model.PriceRange, new { htmlAttributes = new { @class = "form-control", @id = "value" } })
+
+            </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.DisplayOrder, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DisplayOrder, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    @if (Model?.CategoryId > 0)
+                    {
+                        <input type="submit" value="Update" class="btn btn-primary" />
+
+                    }
+                    else
+                    {
+                        <input type="submit" value="Create" class="btn btn-primary" />
+
+                    }
+                    @Html.ActionLink("cancel", "Index", new { @class = "btn btn-primary" })
+
+                </div>
+
+            </div>
+        </div>
+}
+<script>
+    //$("#slider").slider();
+    $("#slider").slider({
+        range: "max",
+        min: 0, // min value
+        max: 200, // max value
+        step: 1,
+        value: 50, // default value of slider
+        slide: function (event, ui) {
+            $("#value").val(ui.value);
+        }
+    })
+
+</script>
+
+
+
